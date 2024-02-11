@@ -11,7 +11,7 @@ MultiBind is inspired by one of the project on the TCM (Python 201 for Hacker) C
 - [X] Data Gathering (OS, IP, PWD)
 - [ ] Port Change (argument)
 - [ ] OS Detection
-- [ ] Friendly UI
+
 
 ## How to Use
 MultiBind uses argparse to dictate whether it is in "client mode" (Sending Connections), "server mode"(Receiving Connections).
