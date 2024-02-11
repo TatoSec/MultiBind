@@ -8,10 +8,7 @@ A bind shell is a type of network shell that listens for incoming connections on
 MultiBind is inspired by one of the project on the TCM (Python 201 for Hacker) Course, I have added and will continue to add multiple functionalities such as:
 - [X] Client Side
 - [X] Server Side
-- [X] Data Gathering
-      - OS Type
-      - Public IP
-      - Current Working Directory
+- [X] Data Gathering (OS, IP, PWD)
 - [ ] Port Change (argument)
 - [ ] OS Detection
 - [ ] Friendly UI
