@@ -1,3 +1,3 @@
 ![Logo](assets/logo.png)
-#MultiBind Shell
+# MultiBind Shell
 ## 🚧 Under Constructions 🚧
