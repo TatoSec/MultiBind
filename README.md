@@ -14,7 +14,7 @@ MultiBind is inspired by one of the projectS on the TCM (Python 201 for Hacker) 
 
 
 ## How to Use
-MultiBind uses argparse to dictate whether it is in "client mode" (Sending Connections), "server mode"(Receiving Connections).
+MultiBind uses argparse to dictate whether it is in "client mode" (Sending Connections) or "server mode"(Receiving Connections).
 
 In a Penetration testing scenario "Client Mode" will run on your attacking machine to send and establish a terminal connection to your victim machine, to start client mode run the following command: 
 ```python
