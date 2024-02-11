@@ -4,6 +4,8 @@ import subprocess
 import threading
 import argparse
 import platform
+import time
+import requests
 from colorama import init, Fore, Back, Style
 
 os = platform.platform()
@@ -12,10 +14,42 @@ DEFAULT_PORT = 5757
 MAX_BUFFER = 4096
 
 
+def haxor_print(text, leading_spaces=0):
+
+    text_chars = list(text)
+    current, mutated = '', ''
+
+    for i in range(len(text)):
+
+        original = text_chars[i]
+        current += original
+        mutated += f'\033[1;38;5;82m{text_chars[i].upper()}\033[0m'
+        print(f'\r{" " * leading_spaces}{mutated}', end='')
+        time.sleep(0.05)
+        print(f'\r{" " * leading_spaces}{current}', end='')
+        mutated = current
+
+    print(f'\r{" " * leading_spaces}{text}\n')
+
+
+def get_public_ip():
+    try:
+        response = requests.get('https://api.ipify.org?format=json')
+        if response.status_code == 200:
+            return response.json()['ip']
+        else:
+            return "Failed to fetch public IP"
+    except Exception as e:
+        return "Error: " + str(e)
+
+
+public_ip = get_public_ip()
+
+
 def execute_bash(bash):
     try:
         output = subprocess.check_output("bash {}".format(bash),
-            stderr=subprocess.STDOUT)
+                                         stderr=subprocess.STDOUT)
     except:
         output = b"Command Failed!"
     return output
@@ -81,11 +115,24 @@ def recv_thread(s):
 
 def banner():
     print(Fore.GREEN + """
-   \  |        |  |   _)  _ ) _)            | 
-  |\/ |  |  |  |   _|  |  _ \  |    \    _` | 
- _|  _| \_,_| _| \__| _| ___/ _| _| _| \__,_| 
-                                              
-        """)
+   ▄▄▄▄███▄▄▄▄   ███    █▄   ▄█           ███      ▄█ 
+ ▄██▀▀▀███▀▀▀██▄ ███    ███ ███       ▀█████████▄ ███ 
+ ███   ███   ███ ███    ███ ███          ▀███▀▀██ ███▌
+ ███   ███   ███ ███    ███ ███           ███   ▀ ███▌
+ ███   ███   ███ ███    ███ ███           ███     ███▌
+ ███   ███   ███ ███    ███ ███           ███     ███ 
+ ███   ███   ███ ███    ███ ███▌    ▄     ███     ███ 
+  ▀█   ███   █▀  ████████▀  █████▄▄██    ▄████▀   █▀  
+                            ▀                         
+▀█████████▄   ▄█  ███▄▄▄▄   ████████▄                 
+  ███    ███ ███  ███▀▀▀██▄ ███   ▀███                
+  ███    ███ ███▌ ███   ███ ███    ███                
+ ▄███▄▄▄██▀  ███▌ ███   ███ ███    ███                
+▀▀███▀▀▀██▄  ███▌ ███   ███ ███    ███                
+  ███    ██▄ ███  ███   ███ ███    ███                
+  ███    ███ ███  ███   ███ ███   ▄███                
+▄█████████▀  █▀    ▀█   █▀  ████████▀                                                               
+        """ + Fore.RESET)
 
 
 def server():
@@ -93,10 +140,12 @@ def server():
     s.bind(("0.0.0.0", DEFAULT_PORT))
     s.listen()
     banner()
-    print("[ -- Starting Bind Shell -- ]")
+    print("[+] Starting Bind Shell")
     while True:
         client_socket, addr = s.accept()
-        print("[ -- New User Connected  -- ]")
+        haxor_print("[+] New User Connected", 0)
+        haxor_print("[*] Ip: {}".format(public_ip), 0)
+        haxor_print("[*] Port: {}".format(DEFAULT_PORT), 0)
         threading.Thread(target=shell_thread, args=(client_socket,)).start()
 
 
@@ -104,7 +153,7 @@ def client(ip):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((ip, DEFAULT_PORT))
 
-    print("[ -- Connecting to bind shell --]")
+    print(" (҂◡_◡) ᕤ Connecting to bind shell ")
 
     threading.Thread(target=send_thread, args=(s,)).start()
     threading.Thread(target=recv_thread, args=(s,)).start()
@@ -124,5 +173,3 @@ if args.listen:
     server()
 elif args.connect:
     client(args.connect)
-
-
