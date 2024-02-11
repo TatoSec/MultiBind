@@ -5,11 +5,12 @@
 ## About
 A bind shell is a type of network shell that listens for incoming connections on a specific network port. When a connection is established, the shell "binds" to the incoming network connection, essentially opening up a command line interface on the target system. This allows an attacker to remotely execute commands and interact with the target machine as if they were physically present and typing commands directly.
 
-MultiBind is inspired by one of the projectS on the TCM (Python 201 for Hacker) Course, I have added and will continue to add multiple functionalities such as:
+MultiBind is inspired by one of the projects on the TCM (Python 201 for Hacker) Course, I have added and will continue to add multiple functionalities such as:
 - [X] Client Side
 - [X] Server Side
 - [X] Data Gathering (OS, IP, PWD)
 - [ ] Port Change (argument)
+- [ ] Encryption (AES)
 - [ ] OS Detection
 
 
