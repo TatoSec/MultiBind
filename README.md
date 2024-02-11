@@ -9,8 +9,8 @@ MultiBind is inspired by one of the projects on the TCM (Python 201 for Hacker) 
 - [X] Client Side
 - [X] Server Side
 - [X] Data Gathering (OS, IP, PWD)
-- [ ] Port Change (argument)
-- [ ] Encryption (AES)
+- [X] Port Change (argument)
+- [X] Encryption (AES)
 - [ ] OS Detection
 - [ ] PowerShell Support
 
