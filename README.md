@@ -1,5 +1,5 @@
 ![Logo](assets/logo.png)
-# MultiBind Shell
+# MultiBind 
 🚧 Under Constructions 🚧
 
 ## About
