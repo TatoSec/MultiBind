@@ -143,6 +143,7 @@ def server():
     s.listen()
     banner()
     haxor_print("--- Starting Bind Shell ---", 0)
+    haxor_print("[+] Opened Port: {}{}".format(DEFAULT_PORT, Fore.GREEN), 0)
     while True:
         client_socket, addr = s.accept()
         print("[+] New Bind From: {}".format(public_ip))
