@@ -20,10 +20,10 @@ MultiBind uses argparse to dictate whether it is in "client mode" (Sending Conne
 
 In a Penetration testing scenario "Client Mode" will run on your attacking machine to send and establish a terminal connection to your victim machine, to start client mode run the following command: 
 ```python
-python3 bind.py -c <VICTIM-MACHINE-IP>
+python3 multibind.py -c <VICTIM-MACHINE-IP>
 ```
 
 On the hand "Server Mode" will run on your victim machine to open up a port and listen on all interfaces(0.0.0.0), currently the default port is "5757", to start server mode run the following command: 
 ```python
-python3 bind.py -l
+python3 multibind.py -l
 ```
